@@ -1,0 +1,37 @@
+﻿@if (ItemSource != null)
+{
+<li class="nav-item nav-dropdown @ItemSource.StyleLi @styleOpen">
+    <a class="nav-link @ItemSource.StyleHref nav-dropdown-toggle" onclick=@ToggleOpen>
+        <i class="nav-icon @ItemSource.style"></i> @ItemSource.Caption
+    </a>
+    @if (ItemSource.HasChild)
+    {
+        <ul class="nav-dropdown-items">
+            @foreach (var child in ItemSource.Children)
+            {
+                <li class="nav-item">
+                    <a class="nav-link" href="@child.Link">
+                        <i class="nav-icon @child.style"></i> @child.Caption
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+</li>
+}
+@functions {
+    internal bool isOpen { get; set; } = false;
+
+    [Parameter]
+    internal NavbarItemModel ItemSource { get; set; }
+
+    internal string styleOpen { get; set; }
+
+    internal void ToggleOpen()
+    {
+        isOpen = !isOpen;
+
+        styleOpen = isOpen ? "open" : "";
+    }
+
+}

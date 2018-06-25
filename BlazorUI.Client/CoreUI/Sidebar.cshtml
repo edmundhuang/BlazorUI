@@ -1,0 +1,38 @@
+﻿@if (DataSource == null)
+{
+    <span>Loading sidebar</span>
+}
+else
+{
+    <nav class="sidebar-nav">
+        <ul class="nav">
+            @foreach (var item in DataSource.MenuItems)
+            {
+                switch (item.ItemType)
+                {
+                    case NavbarItemType.TextOnly:
+                        <li class="nav-title">@item.Caption</li>
+                        break;
+                    case NavbarItemType.MenuItem:
+                        <li class="nav-item @item.StyleLi">
+                            <a class="nav-link @item.StyleHref" href="@item.Link">
+                                <i class="nav-icon @item.style"></i> @item.Caption
+                            </a>
+                        </li>
+                        break;
+                    case NavbarItemType.DropDown:
+                        <NavDropDown ItemSource="@item"></NavDropDown>
+                        break;
+                    default:
+                        break;
+                }
+            }
+        </ul>
+    </nav>
+}
+
+@functions {
+
+[Parameter]
+internal NavbarModel DataSource { get; set; }
+}

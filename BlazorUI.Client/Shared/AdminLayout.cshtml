@@ -1,0 +1,32 @@
+﻿@inherits BlazorLayoutComponent
+@inject AppState State
+
+<div class="app header-fixed sidebar-fixed aside-menu-fixed @State.BodySidebarLgClass @State.BodySidebarClass @State.BodySidebarMinimizeClass">
+    <AppHeader onSidebarToggle=State.ToggleSidebar></AppHeader>
+
+    <div class="app-body">
+        <div class="sidebar">
+
+            <Sidebar DataSource=@State.LoadSidebar()></Sidebar>
+            <button class="sidebar-minimizer brand-minimizer" type="button" onclick=@ToggleMinimize></button>
+        </div>
+        <main class="main">@Body</main>
+    </div>
+</div>
+
+@functions {
+
+    private bool isMinimize { get; set; } = false;
+
+    internal void ToggleMinimize()
+    {
+        isMinimize = !isMinimize;
+
+        State.ToggleSidebarMinimize(isMinimize);
+    }
+
+    protected override void OnInit()
+    {
+        State.OnChange += StateHasChanged;
+    }
+}
