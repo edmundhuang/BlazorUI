@@ -93,8 +93,8 @@ namespace BlazorUI.Client.Services
 
             menuList.Add(new NavbarItemModel { Caption = "Widgets", ItemType=NavbarItemType.TextOnly });
 
-            menuList.Add(new NavbarItemModel { Caption = "Download CoreUI", style = "icon-cloud-download", Link = "https://coreui.io", StyleLi="mt-auto", StyleHref= "nav-link-success" });
-            menuList.Add(new NavbarItemModel { Caption = "Try CoreUI", style = "icon-layers", Link = "https://coreui.io/pro/", StyleHref = "nav-link-danger" });
+            menuList.Add(new NavbarItemModel { Caption = "程序员长春", style = "icon-cloud-download", Link = "https://www.jianshu.com/u/15de06e8d059", Target="_blank", StyleLi="mt-auto", StyleHref= "nav-link-primary" });
+            //menuList.Add(new NavbarItemModel { Caption = "Try CoreUI", style = "icon-layers", Link = "https://coreui.io/pro/", StyleHref = "nav-link-danger" });
 
             result.MenuItems = menuList;
             return result;

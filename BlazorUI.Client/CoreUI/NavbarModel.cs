@@ -24,6 +24,8 @@ namespace BlazorUI.Client.CoreUI
 
         public string Link { get; set; }
 
+        public string Target {get;set;}="_self";
+
         public bool HasChild
         {
             get
