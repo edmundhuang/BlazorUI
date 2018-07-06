@@ -12,7 +12,7 @@ namespace BlazorUI.Client.Services
 
             var menuList = new List<NavbarItemModel>();
 
-            menuList.Add(new NavbarItemModel { Caption = "Dashboard", Link = "index.html", style = "icon-speedometer" });
+            menuList.Add(new NavbarItemModel { Caption = "控制面板", Link = "index.html", style = "icon-speedometer" });
             menuList.Add(new NavbarItemModel { ItemType = NavbarItemType.TextOnly, Caption = "Theme" });
             menuList.Add(new NavbarItemModel { Caption = "Colors", Link = "colors.html", style = "icon-drop" });
             menuList.Add(new NavbarItemModel { Caption = "Typography", Link = "colors.html", style = "icon-pencil" });
