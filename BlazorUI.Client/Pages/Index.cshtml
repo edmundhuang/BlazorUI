@@ -1,4 +1,10 @@
 ﻿@page "/"
 
 <Breadcrumb></Breadcrumb>
-<div class="container-fluid"></div>
+<div class="container-fluid">
+    <img id="image-preview" style="height:100px; width:100px;" src="">
+
+    <input style="display:none" id="input-image-hidden" onchange="document.getElementById('image-preview').src = window.URL.createObjectURL(this.files[0])" type="file" accept="image/jpeg, image/png" />
+
+    <button onclick="HandleBrowseClick('input-image-hidden');">UPLOAD IMAGE</button>
+</div>
