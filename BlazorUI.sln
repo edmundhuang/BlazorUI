@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorUI.Server", "BlazorUI.Server\BlazorUI.Server.csproj", "{74DDDED7-45D6-4DD3-8007-76151EC9B03E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorUI.Server", "BlazorUI.Server\BlazorUI.Server.csproj", "{74DDDED7-45D6-4DD3-8007-76151EC9B03E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorUI.Client", "BlazorUI.Client\BlazorUI.Client.csproj", "{DD918E43-EF33-4F1B-B303-22E1F7A884E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorUI.Client", "BlazorUI.Client\BlazorUI.Client.csproj", "{DD918E43-EF33-4F1B-B303-22E1F7A884E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorUI.Shared", "BlazorUI.Shared\BlazorUI.Shared.csproj", "{71FBE414-46C9-49F0-8E0B-0A0B460D64F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorUI.Shared", "BlazorUI.Shared\BlazorUI.Shared.csproj", "{71FBE414-46C9-49F0-8E0B-0A0B460D64F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorUI.Layout", "BlazorUI.Layout\BlazorUI.Layout.csproj", "{EF920246-F0D0-4A6A-85EC-2E55068A34F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{71FBE414-46C9-49F0-8E0B-0A0B460D64F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71FBE414-46C9-49F0-8E0B-0A0B460D64F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71FBE414-46C9-49F0-8E0B-0A0B460D64F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF920246-F0D0-4A6A-85EC-2E55068A34F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF920246-F0D0-4A6A-85EC-2E55068A34F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF920246-F0D0-4A6A-85EC-2E55068A34F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF920246-F0D0-4A6A-85EC-2E55068A34F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

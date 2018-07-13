@@ -1,0 +1,32 @@
+﻿@inherits BlazorComponentBase
+<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">BlazorUI</a>
+    <button class="navbar-toggler" onclick="@ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<DynamicElement Attributes="@UnknownParameters" TagName="div" class="@classname">
+    @ChildContent
+</DynamicElement>
+
+@functions {
+bool collapseNavMenu = true;
+
+void ToggleNavMenu()
+{
+    collapseNavMenu = !collapseNavMenu;
+}
+
+private string classname
+{
+    get
+    {
+        var collapse = collapseNavMenu ? "collapse" : null;
+        return $"{collapse} {Class}";
+    }
+}
+
+[Parameter] private string Class { get; set; }
+[Parameter] private RenderFragment ChildContent { get; set; }
+}

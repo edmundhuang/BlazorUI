@@ -12,7 +12,7 @@ namespace BlazorUI.Client.Services
 
             var menuList = new List<NavbarItemModel>();
 
-            menuList.Add(new NavbarItemModel { Caption = "控制面板", Link = "index.html", style = "icon-speedometer" });
+            menuList.Add(new NavbarItemModel { Caption = "控制面板", Link = "admin/index.html", style = "icon-speedometer" });
             menuList.Add(new NavbarItemModel { ItemType = NavbarItemType.TextOnly, Caption = "Theme" });
             menuList.Add(new NavbarItemModel { Caption = "Colors", Link = "colors.html", style = "icon-drop" });
             menuList.Add(new NavbarItemModel { Caption = "Typography", Link = "colors.html", style = "icon-pencil" });
@@ -103,54 +103,54 @@ namespace BlazorUI.Client.Services
         #region "Sidebar Toggle"
         public event Action OnChange;
 
-        public string BodySidebarClass = "";
-        public string BodySidebarLgClass = "sidebar-lg-show";
+        //public string BodySidebarClass = "";
+        //public string BodySidebarLgClass = "sidebar-lg-show";
 
-        public string BodySidebarMinimizeClass = "";
+        //public string BodySidebarMinimizeClass = "";
 
-        public void ToggleSidebarMinimize(bool isMinimize)
-        {
-            if (isMinimize)
-            {
-                BodySidebarMinimizeClass = "brand-minimized sidebar-minimized";
-            }
-            else
-            {
-                BodySidebarMinimizeClass = "";
-            }
-            NotifyStateChanged();
-        }
+        //public void ToggleSidebarMinimize(bool isMinimize)
+        //{
+        //    if (isMinimize)
+        //    {
+        //        BodySidebarMinimizeClass = "brand-minimized sidebar-minimized";
+        //    }
+        //    else
+        //    {
+        //        BodySidebarMinimizeClass = "";
+        //    }
+        //    NotifyStateChanged();
+        //}
 
-        public void ToggleSidebar(string type, bool isVisible)
-        {
-            Console.WriteLine(type);
+        //public void ToggleSidebar(string type, bool isVisible)
+        //{
+        //    Console.WriteLine(type);
 
-            switch (type)
-            {
-                case "lg":
-                    if (isVisible)
-                    {
-                        BodySidebarLgClass = "sidebar-lg-show";
-                    }
-                    else
-                    {
-                        BodySidebarLgClass = "";
-                    }
-                    break;
-                default:
-                    if (isVisible)
-                    {
-                        BodySidebarClass = "sidebar-show";
-                    }
-                    else
-                    {
-                        BodySidebarClass = "";
-                    }
-                    break;
-            }
+        //    switch (type)
+        //    {
+        //        case "lg":
+        //            if (isVisible)
+        //            {
+        //                BodySidebarLgClass = "sidebar-lg-show";
+        //            }
+        //            else
+        //            {
+        //                BodySidebarLgClass = "";
+        //            }
+        //            break;
+        //        default:
+        //            if (isVisible)
+        //            {
+        //                BodySidebarClass = "sidebar-show";
+        //            }
+        //            else
+        //            {
+        //                BodySidebarClass = "";
+        //            }
+        //            break;
+        //    }
 
-            NotifyStateChanged();
-        }
+        //    NotifyStateChanged();
+        //}
 
         private void NotifyStateChanged() => OnChange?.Invoke();
     }

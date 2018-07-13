@@ -16,4 +16,13 @@
   <ItemGroup>
     <ProjectReference Include="..\BlazorUI.Shared\BlazorUI.Shared.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Admin\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Admin\_ViewImports.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
 </Project>

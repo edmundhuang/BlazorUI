@@ -1,8 +1,8 @@
 ﻿@inherits BlazorLayoutComponent
 @inject AppState State
 
-<div class="app header-fixed sidebar-fixed aside-menu-fixed @State.BodySidebarLgClass @State.BodySidebarClass @State.BodySidebarMinimizeClass">
-    <AppHeader onSidebarToggle=State.ToggleSidebar></AppHeader>
+<div class="app header-fixed sidebar-fixed aside-menu-fixed @BodySidebarLgClass @BodySidebarClass @BodySidebarMinimizeClass">
+    <AppHeader onSidebarToggle=@ToggleSidebar></AppHeader>
 
     <div class="app-body">
         <div class="sidebar">
@@ -10,23 +10,56 @@
             <Sidebar DataSource=@State.LoadSidebar()></Sidebar>
             <button class="sidebar-minimizer brand-minimizer" type="button" onclick=@ToggleMinimize></button>
         </div>
-        <main class="main">@Body</main>
+        <main class="main">
+            <Breadcrumb></Breadcrumb>
+            <div class="container-fluid">
+                <div class="ui-view">
+                    <div>
+                        @Body
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
+    <footer class="app-footer">
+        <div>
+            <a href="https://coreui.io">CoreUI</a>
+            <span>&copy; 2018 creativeLabs.</span>
+        </div>
+        <div class="ml-auto">
+            <span>Powered by</span>
+            <a href="https://coreui.io">CoreUI</a>
+        </div>
+    </footer>
 </div>
-
 @functions {
 
     private bool isMinimize { get; set; } = false;
 
+    public string BodySidebarMinimizeClass = "";
     internal void ToggleMinimize()
     {
         isMinimize = !isMinimize;
 
-        State.ToggleSidebarMinimize(isMinimize);
+        BodySidebarMinimizeClass = isMinimize ? "brand-minimized sidebar-minimized" : "";
     }
 
-    protected override void OnInit()
+    public string BodySidebarClass = "";
+    public string BodySidebarLgClass = "sidebar-lg-show";
+    public void ToggleSidebar(string type, bool isVisible)
     {
-        State.OnChange += StateHasChanged;
+        Console.WriteLine(type);
+
+        switch (type)
+        {
+            case "lg":
+                BodySidebarLgClass = isVisible ? "sidebar-lg-show" : "";
+                break;
+            default:
+                BodySidebarClass = isVisible ? "sidebar-show" : "";
+                break;
+        }
+
+        StateHasChanged();
     }
 }
