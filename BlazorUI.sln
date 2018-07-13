@@ -9,7 +9,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorUI.Client", "BlazorUI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorUI.Shared", "BlazorUI.Shared\BlazorUI.Shared.csproj", "{71FBE414-46C9-49F0-8E0B-0A0B460D64F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorUI.Layout", "BlazorUI.Layout\BlazorUI.Layout.csproj", "{EF920246-F0D0-4A6A-85EC-2E55068A34F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorUI.Layout", "BlazorUI.Layout\BlazorUI.Layout.csproj", "{EF920246-F0D0-4A6A-85EC-2E55068A34F5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{4EFE651E-2D4D-4AD1-8EA5-59557EAD3B42}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		.travis.yml = .travis.yml
+		build.cake = build.cake
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorShared", "BlazorShared\BlazorShared.csproj", "{FBD67CF8-47D1-480C-AA57-DE2A6281A978}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +44,10 @@ Global
 		{EF920246-F0D0-4A6A-85EC-2E55068A34F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF920246-F0D0-4A6A-85EC-2E55068A34F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF920246-F0D0-4A6A-85EC-2E55068A34F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBD67CF8-47D1-480C-AA57-DE2A6281A978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBD67CF8-47D1-480C-AA57-DE2A6281A978}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBD67CF8-47D1-480C-AA57-DE2A6281A978}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBD67CF8-47D1-480C-AA57-DE2A6281A978}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

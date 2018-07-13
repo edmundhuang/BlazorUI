@@ -10,11 +10,18 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Browser" Version="0.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="0.4.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
     <DotNetCliToolReference Include="Microsoft.AspNetCore.Blazor.Cli" Version="0.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BlazorUI.Shared\BlazorUI.Shared.csproj" />
+    <ProjectReference Include="..\BlazorShared\BlazorShared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BlazorShared">
+      <HintPath>..\Libs\BlazorShared.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

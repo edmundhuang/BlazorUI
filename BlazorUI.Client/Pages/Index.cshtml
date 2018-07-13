@@ -1,10 +1,116 @@
 ﻿@page "/"
 
-<Breadcrumb></Breadcrumb>
-<div class="container-fluid">
-    <img id="image-preview" style="height:100px; width:100px;" src="">
-    <p>dafsdafs</p>
-    <input style="display:none" id="input-image-hidden" onchange="document.getElementById('image-preview').src = window.URL.createObjectURL(this.files[0])" type="file" accept="image/jpeg, image/png" />
+@addTagHelper *, BlazorShared
+@inject HttpClient Http
 
-    <button onclick="HandleBrowseClick('input-image-hidden');">UPLOAD IMAGE</button>
+@using System.ComponentModel.DataAnnotations;
+@using System.Collections.Specialized;
+@using BlazorUI.Client.Common;
+@using System.Collections;
+
+<div class="card">
+    <div class="card-header">
+        天气预报
+    </div>
+    <div class="card-body">
+        @if (forecasts == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <BlazorTable DataSource="@Results" ExtraColumns="@extraColumns" CellClasses="@cellClass" ColumnFormats="@colFormat" AllowSort="true"></BlazorTable>
+            <BlazorPager CurrentPage="@CurrentPage" PageCount="@PageCount" PageSize="@PageSize" RowCount="@RowCount" PageChanged="@PagerPageChanged"></BlazorPager>
+        }
+    </div>
+
+    <pre>
+        class WeatherForecast
+        {
+        [Display(Name = "日期")]
+        public DateTime Date { get; set; }
+
+        [Display(Name = "摄氏温度")]
+        public int TemperatureC { get; set; }
+        public int TemperatureF { get; set; }
+        public string Summary { get; set; }
+        }
+    </pre>
 </div>
+
+@functions{
+
+    WeatherForecast[] forecasts;
+    IList Results { get; set; }
+
+    PagedResult<WeatherForecast> Result;
+
+    NameValueCollection colFormat;
+    NameValueCollection cellClass;
+
+    NameValueCollection extraColumns;
+
+    int CurrentPage = 1;
+    int PageCount = 10;
+    int PageSize = 5;
+    int RowCount = 100;
+
+    protected override async Task OnInitAsync()
+    {
+        Console.WriteLine("parent init");
+
+        colFormat = new NameValueCollection();
+
+        colFormat.Add("Date", "{0:d}");
+        colFormat.Add("TemperatureC", "{0:0℃}");
+
+        cellClass = new NameValueCollection();
+        cellClass.Add("TemperatureC", "text-right");
+        cellClass.Add("TemperatureF", "text-right");
+
+        extraColumns = new NameValueCollection();
+
+        //extraColumns.Add("", "<ActionLinkButton Action = \"Details\" Route = \"/students\" RouteValue = \"{Id}\" ></ ActionLinkButton>" +
+        //                     "<ActionLinkButton Action = \"Edit\" Route = \"/students\" RouteValue = \"{Id}\" ></ ActionLinkButton>" +
+        //                     "<ActionLinkButton Action = \"Delete\" Route = \"/students\" RouteValue = \"{Id}\" ></ ActionLinkButton>");
+
+        extraColumns.Add("", "<a class=\"btn btn-link pt-0 pb-0\" href=\"/counter\"><span class=\"oi oi-eye text-primary\" data-toggle=\"tooltip\" title=\"View\"></span></a>" +
+                             "<a class=\"btn btn-link pt-0 pb-0\" href=\"/counter\"><span class=\"oi oi-pencil text-warning\" data-toggle=\"tooltip\" title=\"Edit\"></span></a>" +
+                             "<a class=\"btn btn-link pt-0 pb-0\" href=\"/counter\"><span class=\"oi oi-trash text-danger\" data-toggle=\"tooltip\" title=\"Delete\"></span></a>");
+
+        //extraColumns.Add(" ", "<b>t</b>est<button onclick='dd'>测试{Date}</button><table><tr><td>1</td><td>2</td></tr></table>");
+
+        await LoadDataAsync();
+    }
+
+    private async Task LoadDataAsync()
+    {
+        if (forecasts == null)
+            forecasts = await Http.GetJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+
+        Result = forecasts.GetPaged(CurrentPage, PageSize);
+
+        Results = Result.Results;
+        PageCount = Result.PageCount;
+        RowCount = Result.RowCount;
+    }
+
+    protected void PagerPageChanged(int page)
+    {
+        CurrentPage = page;
+
+        LoadDataAsync().Wait();
+        StateHasChanged();
+    }
+
+    class WeatherForecast
+    {
+        [Display(Name = "日期")]
+        public DateTime Date { get; set; }
+
+        [Display(Name = "摄氏温度")]
+        public int TemperatureC { get; set; }
+        public int TemperatureF { get; set; }
+        public string Summary { get; set; }
+    }
+}

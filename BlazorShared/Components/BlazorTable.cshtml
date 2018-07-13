@@ -1,0 +1,261 @@
+﻿@using System.Collections;
+@using System.Collections.Generic;
+@using System.Collections.Specialized;
+@using System.Linq;
+@using System.Reflection;
+@using BlazorShared.Helper;
+@using System.Text.RegularExpressions;
+
+@*<style>
+    .Sorting {
+        cursor: pointer;
+    }
+
+    .SortDown:after {
+        position:absolute;
+        right:0.5em;
+        content: " ▾";
+        font-family: Arial, sans-serif;
+    }
+
+    .SortUp:after {
+        position: absolute;
+        right: 0.5em;
+        content: " ▴";
+        font-family: Arial, sans-serif;
+    }
+</style>*@
+
+@if (DataSource == null)
+{
+    <p><em>数据加载中，请稍候...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                @foreach (var col in DisplayColumns)
+                {
+                    if (!col.Sortable)
+                    {
+                        <th scope="col" onclick="@(()=>DoSort(col.FieldName))">
+                            @col.DisplayName
+                            @if (col.FieldName == SortFieldName)
+                            {
+                                if (SortDirection)
+                                {
+                                    <span class="oi oi-sort-ascending" title="icon name" aria-hidden="true"></span>
+                                }
+                                else
+                                {
+                                    <span class="oi oi-sort-descending" title="icon name" aria-hidden="true"></span>
+                                }
+                            }
+                        </th>
+                    }
+                    else
+                    {
+                        <th scope="col">
+                            @col.DisplayName
+                        </th>
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in DataSource)
+            {
+                int iCol = 0;
+                <tr>
+                    @foreach (var col in DisplayColumns)
+                    {
+                        if (col.isExtra)
+                        {
+                            <td>@BlazorHelper.RenderRawHtml(ParseHTML(col.CellValue, row))</td>
+                        }
+                        else
+                        {
+                            var cell = col.Property.GetValue(row, null);
+
+                            var format = ColumnFormats.Get(col.FieldName);
+                            var cellVal = format == null ? cell : string.Format(format, cell);
+
+                            var cellClass = CellClasses.Get(col.FieldName);
+
+                            if (iCol == 0)
+                            {
+                                iCol++;
+                                <th scope="row" class="@cellClass">@cellVal</th>
+                            }
+                            else
+                            {
+                                <td class="@cellClass">@cellVal</td>
+                            }
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@functions {
+
+    [Parameter]
+    protected IList DataSource { get; set; }
+
+    [Parameter]
+    protected string Columns { get; set; }
+
+    [Parameter]
+    protected NameValueCollection ExtraColumns { get; set; } = new NameValueCollection();
+
+    [Parameter]
+    protected NameValueCollection ColumnFormats { get; set; } = new NameValueCollection();
+
+    [Parameter]
+    protected NameValueCollection CellClasses { get; set; } = new NameValueCollection();
+
+    [Parameter]
+    protected bool AllowSort { get; set; }
+
+    [Parameter]
+    protected Action<string, string> SortingChanged { get; set; }
+
+    private Type ElementType { get; set; }
+    private PropertyInfo[] ElementProps { get; set; }
+    internal List<GridViewColumn> DisplayColumns { get; set; }
+    private string SortFieldName { get; set; }
+    internal bool SortDirection;
+
+    private char delimeter = ',';
+
+    protected override void OnInit()
+    {
+
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (DataSource == null)
+            return;
+
+        if (ElementType != null)
+            return;
+
+        DisplayColumns = new List<GridViewColumn>();
+
+        ElementType = DataSource.GetType().GetAnyElementType();
+        ElementProps = ElementType.GetProperties();
+
+        var cols = GetColumns(ElementProps, Columns);
+
+        foreach (var prop in ElementProps)
+        {
+            //Console.WriteLine(prop.Name);
+            //Console.WriteLine(prop.GetDisplayName());
+
+            //Console.WriteLine(cols.Contains(prop.Name));
+            if (cols.Contains(prop.Name))
+            {
+                DisplayColumns.Add(new GridViewColumn
+                {
+                    FieldName = prop.Name,
+                    DisplayName = prop.GetDisplayName(),
+                    Property = prop,
+                });
+            }
+        }
+
+        foreach (string key in ExtraColumns)
+        {
+            DisplayColumns.Add(new GridViewColumn
+            {
+                DisplayName = key,
+                isExtra = true,
+                CellValue = ExtraColumns[key]
+            });
+        }
+
+        //Console.WriteLine($"DisplayColumn Count: {DisplayColumns.Count()}");
+    }
+
+    private string[] GetColumns(PropertyInfo[] props, string columns)
+    {
+        var cols = new string[] { };
+
+        if (!String.IsNullOrEmpty(columns))
+            cols = columns.Split(delimeter);
+
+        if (cols.Length == 0)
+        {
+            cols = props.Select(c => c.Name).ToArray();
+        }
+
+        return cols;
+    }
+
+
+    private Dictionary<string, List<string>> dicMatchs = new Dictionary<string, List<string>>();
+    private string ParseHTML(string OriginalString, object Entity)
+    {
+        var props = new List<string>();
+
+        if (dicMatchs.ContainsKey(OriginalString))
+        {
+            props = dicMatchs[OriginalString];
+        }
+        else
+        {
+            //var regex = new Regex("(?<=\\{).+?(?=\\})");
+            var regex = new Regex("(?<={)[^}]*");
+            var matchs = regex.Matches(OriginalString);
+
+            foreach (Match obj in matchs)
+            {
+                foreach (Capture capture in obj.Captures)
+                {
+                    if (!props.Contains(capture.Value))
+                    {
+                        props.Add(capture.Value);
+                    }
+                }
+            }
+            dicMatchs.Add(OriginalString, props);
+        }
+
+
+        foreach (var item in props)
+        {
+            PropertyInfo pi = ElementProps.FirstOrDefault(c => c.Name == item);
+
+            if (pi != null)
+            {
+                var obj = pi.GetValue(Entity);
+
+                OriginalString = OriginalString.Replace("{" + item + "}", obj?.ToString());
+            }
+        }
+
+        return OriginalString;
+    }
+
+    internal void DoSort(string FieldName)
+    {
+        Console.WriteLine(FieldName);
+        if (SortFieldName == FieldName)
+        {
+            SortDirection = !SortDirection;
+        }
+        else
+        {
+            SortFieldName = FieldName;
+            SortDirection = false;
+        }
+
+        Console.WriteLine(SortDirection);
+
+        StateHasChanged();
+    }
+}

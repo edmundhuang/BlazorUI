@@ -1,0 +1,57 @@
+﻿@if (PageCount != 0)
+{
+    <nav aria-label="...">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" onclick="@(() => PageClick(1))" tabindex="-1">&laquo;</a>
+            </li>
+            @for (var i = StartIndex; i <= FinishIndex; i++)
+            {
+                var currentIndex = i;
+                @if (i == CurrentPage)
+                {
+                    <li class="page-item active"><a class="page-link">@i</a></li>
+                }
+                else
+                {
+                    <li class="page-item"><a class="page-link" onclick="@(() => PageClick(currentIndex))">@i</a></li>
+                }
+            }
+            <li class="page-item">
+                <a class="page-link" onclick="@(() => PageClick(PageCount))">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+}
+
+@functions {
+
+[Parameter]
+protected int CurrentPage { get; set; }
+[Parameter]
+protected int PageCount { get; set; }
+[Parameter]
+protected int PageSize { get; set; }
+[Parameter]
+protected int RowCount { get; set; }
+
+[Parameter]
+protected Action<int> PageChanged { get; set; }
+
+protected int StartIndex { get; private set; } = 0;
+protected int FinishIndex { get; private set; } = 0;
+
+protected override void OnParametersSet()
+{
+    StartIndex = Math.Max(CurrentPage - 5, 1);
+    FinishIndex = Math.Min(CurrentPage + 5, PageCount);
+
+    base.OnParametersSet();
+}
+
+protected void PageClick(int page)
+{
+    PageChanged?.Invoke(page);
+}
+
+}
